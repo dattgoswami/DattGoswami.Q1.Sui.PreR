@@ -1,4 +1,4 @@
-module examples::donuts {
+module examples::pizza {
     use sui::transfer;
     use sui::sui::SUI;
     use sui::coin::{Self, Coin};
@@ -10,9 +10,9 @@ module examples::donuts {
     
     struct ShopOwnerCap has key { id: UID }
 
-    struct Donut has key { id : UID }
+    struct Pizza has key { id : UID }
 
-    struct DonutShop has key {
+    struct PizzaShop has key {
         id: UID,
         price: u64,
         balance: Balance<SUI>
@@ -23,15 +23,15 @@ module examples::donuts {
             id: object::new(ctx)
         }, tx_context::sender(ctx));
 
-        transfer::share_object(DonutShop {
+        transfer::share_object(PizzaShop {
             id: object::new(ctx),
             price: 1000,
             balance: balance::zero()
         })
     }
 
-    public fun buy_donut(
-        shop: &mut DonutShop, payment: &mut Coin<SUI>, ctx: &mut TxContext
+    public fun buy_pizza(
+        shop: &mut PizzaShop, payment: &mut Coin<SUI>, ctx: &mut TxContext
     ) {
         assert!(coin::value(payment) >= shop.price, ENotEnough);
 
@@ -40,18 +40,18 @@ module examples::donuts {
 
         balance::join(&mut shop.balance, paid);
 
-        transfer::transfer(Donut {
+        transfer::transfer(Pizza {
             id: object::new(ctx)
         }, tx_context::sender(ctx))
     }
 
-    public fun eat_donut(d: Donut) {
-        let Donut { id } = d;
+    public fun eat_pizza(d: Pizza) {
+        let Pizza { id } = d;
         object::delete(id);
     }
 
     public fun collect_profits(
-        _: &ShopOwnerCap, shop: &mut DonutShop, ctx: &mut TxContext
+        _: &ShopOwnerCap, shop: &mut PizzaShop, ctx: &mut TxContext
     ): Coin<SUI> {
         let amount = balance::value(&shop.balance);
         coin::take(&mut shop.balance, amount, ctx)

@@ -17,6 +17,12 @@ Follow the instructions to set up and install Sui:
 
 - [Sui Installation Guide](https://docs.sui.io/guides/developer/getting-started/sui-install#install-sui-binaries)
 
+### Package Creation
+
+```
+sui move new prereqs
+```
+
 ## Repository Structure
 
 - `DattGoswami.Q1.Sui.PreR/`
