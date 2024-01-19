@@ -9,4 +9,7 @@ module examples::object {
     public fun create(ctx: &mut TxContext): Object {
         Object { id: object::new(ctx) }
     }
+    entry fun create_and_transfer(to: address, ctx: &mut TxContext){
+        transfer::transfer(create(ctx), to)
+    }
 }
